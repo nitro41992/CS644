@@ -1,11 +1,11 @@
 /home/ubuntu/server/hadoop-2.10.0
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ javac PokerCard.java -cp $(./../../bin/hadoop classpath)
+ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ javac cards.java -cp $(./../../bin/hadoop classpath)
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ sudo jar cvf PokerCard.jar PokerCard*.class
-
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ ./../../bin/hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
+ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ sudo jar cvf cards.jar cards*.class
 
 ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ ./../../bin/hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
 
-../../bin/hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/org/myorg/output
+ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ ../../bin/hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/org/
+
+

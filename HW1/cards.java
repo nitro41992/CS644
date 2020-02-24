@@ -20,10 +20,8 @@ public class cards {
 		Job job = Job.getInstance(config, "Finding Missing Cards");
 
 		job.setJarByClass(cards.class);
-
 		job.setMapperClass(map.class);
 		job.setReducerClass(reduce.class);
-
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(IntWritable.class);
 
@@ -42,11 +40,13 @@ public class cards {
 	// extend mapper class
 	public static class map extends Mapper<LongWritable, Text, Text, IntWritable> {
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-			String line = value.toString();
-			String[] lineSplit = line.split(",");
-			Text textNew = new Text(lineSplit[0]);
-			IntWritable intWritable = new IntWritable(Integer.parseInt(lineSplit[1]));
-			context.write(textNew, intWritable);
+
+			String row = value.toString();
+			String[] subRow = row.split(",");
+			Text suit = new Text(subRow[0]);
+			IntWritable intWritable = new IntWritable(Integer.parseInt(subRow[1]));
+			context.write(suit, intWritable);
+
 		}
 	}
 
@@ -55,30 +55,30 @@ public class cards {
 		public void reduce(Text key, Iterable<IntWritable> value, Context context)
 				throws IOException, InterruptedException {
 
-			ArrayList<Integer> fullDeck = new ArrayList<Integer>();
+			ArrayList<Integer> deck = new ArrayList<Integer>();
 
 			for (int i = 0; i < 13; i++) {
-				fullDeck.add(i);
+				deck.add(i);
 			}
 
-			int cardCount = 0, cardVal = 0;
+			int counts = 0, rank = 0;
 			int size = 0;
 
 			for (IntWritable cards : value) {
-				cardCount++;
-				cardVal = cards.get();
-				if (fullDeck.contains(cardVal)) {
-					int index = fullDeck.indexOf(cardVal);
-					fullDeck.remove(index);
+				counts++;
+				rank = cards.get();
+				if (deck.contains(rank)) {
+					int index = deck.indexOf(rank);
+					deck.remove(index);
 				}
 			}
 
-			cardCount = 12 - cardCount;
-			if (cardCount <= 12 && cardCount >= 0) {
-				size = fullDeck.size();
+			counts = 12 - counts;
+			if (counts <= 12 && counts >= 0) {
+				size = deck.size();
 				int counter = 0;
 				while (counter < size) {
-					IntWritable intWritable = new IntWritable(fullDeck.get(counter));
+					IntWritable intWritable = new IntWritable(deck.get(counter));
 					context.write(key, intWritable);
 					counter++;
 				}
