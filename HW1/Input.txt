@@ -1,0 +1,3 @@
+Heart,8
+Spade,10
+Diamond,1
