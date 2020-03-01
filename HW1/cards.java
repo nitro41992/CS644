@@ -57,7 +57,7 @@ public class cards {
 
 			ArrayList<Integer> deck = new ArrayList<Integer>();
 
-			for (int i = 0; i < 13; i++) {
+			for (int i = 1; i < 13; i++) {
 				deck.add(i);
 			}
 
