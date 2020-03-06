@@ -17,15 +17,16 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-      <property>
-        <name>dfs.datanode.data.dir</name>
-        <value>file:///home/ubuntu/server/hadoop-2.10.0/hdfs/datanode</value>
-        <description>Comma separated list of paths on the local filesystem of a DataNode where it should store its blocks.</description>
-    </property>
-
-    <property>
-        <name>dfs.namenode.name.dir</name>
-        <value>file:///home/ubuntu/server/hadoop-2.10.0/hdfs/namenode</value>
-        <description>Path on the local filesystem where the NameNode stores the namespace and transaction logs persistently.</description>
-    </property>
+   <property>
+      <name>dfs.namenode.name.dir</name>
+      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/name</value>
+   </property>
+   <property>
+      <name>dfs.namenode.data.dir</name>
+      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/data</value>
+   </property>
+   <property>
+      <name>dfs.replication</name>
+      <value>3</value>
+   </property>
 </configuration>

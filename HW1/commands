@@ -1,11 +1,21 @@
-/home/ubuntu/server/hadoop-2.10.0
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+PATH=$PATH:$HOME/.local/bin:$HOME/binPATH=$PATH:$JAVA_HOME/bin:PATH
+export PATH
+export HADOOP_HOME=/home/ubuntu/server/hadoop-2.10.0
+export HADOOP_PREFIX=/home/ubuntu/server/hadoop-2.10.0
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+source ~/.bashrc
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ javac cards.java -cp $(./../../bin/hadoop classpath)
+start-dfs.sh
+start-yarn.sh
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ sudo jar cvf cards.jar cards*.class
+javac cards.java -cp $(hadoop classpath)
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ ./../../bin/hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
+jar cvf cards.jar cards*.class
 
-ubuntu@ip-172-31-34-109:~/server/hadoop-2.10.0/org/myorg$ ../../bin/hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/org/
+hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
+
+bin/hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/org/
 
 
