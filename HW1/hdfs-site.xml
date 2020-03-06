@@ -22,7 +22,7 @@
       <value>/home/ubuntu/server/hadoop-2.10.0/dfs/name</value>
    </property>
    <property>
-      <name>dfs.namenode.data.dir</name>
+      <name>dfs.datanode.data.dir</name>
       <value>/home/ubuntu/server/hadoop-2.10.0/dfs/data</value>
    </property>
    <property>

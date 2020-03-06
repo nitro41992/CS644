@@ -10,9 +10,16 @@ source ~/.bashrc
 start-dfs.sh
 start-yarn.sh
 
+hdfs dfs -mkdir -p /user
+hdfs dfs -mkdir -p /user/ubuntu
+hdfs dfs -mkdir -p /user/ubuntu/input
+hdfs dfs -put ~/server/server/hadoop-2.10.0/repo/hw3/input/Input.txt /user/ubuntu/input/
+
 javac cards.java -cp $(hadoop classpath)
 
 jar cvf cards.jar cards*.class
+
+hadoop dfsadmin -safemode leave
 
 hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
 
