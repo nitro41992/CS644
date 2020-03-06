@@ -18,12 +18,14 @@
 
 <configuration>
    <property>
-      <name>dfs.namenode.name.dir</name>
-      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/name</value>
+      <name>dfs.data.dir</name>
+      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/name/data</value>
+      <final>true</final>
    </property>
    <property>
-      <name>dfs.datanode.data.dir</name>
-      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/data</value>
+      <name>dfs.name.dir</name>
+      <value>/home/ubuntu/server/hadoop-2.10.0/dfs/name</value>
+      <final>true</final>
    </property>
    <property>
       <name>dfs.replication</name>
