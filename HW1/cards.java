@@ -55,7 +55,7 @@ public class cards {
 		job.setMapOutputValueClass(IntWritable.class);
 		TableMapReduceUtil.initTableReducerJob("cards", reduce.class, job);
 
-		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileInputFormat.addInputPath(job, new Path(args[2]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
 		boolean status = job.waitForCompletion(true);
