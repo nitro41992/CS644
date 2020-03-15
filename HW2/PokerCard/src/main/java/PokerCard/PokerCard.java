@@ -87,14 +87,14 @@ public class PokerCard {
 
 		Configuration conf = HBaseConfiguration.create();
 		Connection conn = ConnectionFactory.createConnection(conf);
-
+		
 		Admin admin = conn.getAdmin();
-
+		
 		HTableDescriptor htdesc = new HTableDescriptor(TableName.valueOf("PokerCard"));
 		HColumnDescriptor hcdesc = new HColumnDescriptor(Bytes.toBytes("cf"));
 		htdesc.addFamily(hcdesc);
 		admin.createTable(htdesc);
-
+		
 		Job job = Job.getInstance(conf, "Finding Missing Cards");
 
 		job.setJarByClass(PokerCard.class);

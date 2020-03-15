@@ -1,0 +1,51 @@
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+PATH=$PATH:$HOME/.local/bin:$HOME/binPATH=$PATH:$JAVA_HOME/bin:PATH
+export PATH
+export HADOOP_HOME=/home/ubuntu/server/hadoop-2.10.0
+export HADOOP_PREFIX=/home/ubuntu/server/hadoop-2.10.0
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+source ~/.bashrc
+
+mkdir -p $HADOOP_HOME/dfs/name
+mkdir -p $HADOOP_HOME/dfs/name/data
+
+hdfs namenode -format
+
+start-dfs.sh
+start-yarn.sh
+
+hdfs dfs -mkdir -p /user
+hdfs dfs -mkdir -p /user/ubuntu
+hdfs dfs -mkdir -p /user/ubuntu/input
+hdfs dfs -put ~/server/hadoop-2.10.0/repo/hw3/input/Input.txt /user/ubuntu/input/
+
+javac cards.java -cp $(hadoop classpath)
+
+jar cvf cards.jar cards*.class
+
+hadoop dfsadmin -safemode leave
+
+hadoop jar cards.jar cards /user/ubuntu/input/ /user/ubuntu/output
+
+bin/hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/org/
+
+
+-------HBASE
+wget http://apache.mirror.gtcomm.net/hbase/stable/hbase-2.2.3-bin.tar.gz
+tar -zxvf hbase-2.2.3-bin.tar.gz
+rm hbase-2.2.3-bin.tar.gz
+sudo mv hbase-2.2.3 /usr/local/HBase/
+export HBASE_HOME=/usr/local/Hbase
+export PATH=$PATH:$HBASE_HOME/bin
+source ~/.bashrc
+sudo su
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+cd /usr/local/HBase
+bin/start-hbase.sh
+
+javac cards.java  -cp $(hbase classpath):$(hadoop classpath)
+
+hbase shell
+hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator="," -Dimporttsv.columns=HBASE_ROW_KEY,cf:id,cf:suit,cf:rank deck /user/ubuntu/input/Input.txt
+
