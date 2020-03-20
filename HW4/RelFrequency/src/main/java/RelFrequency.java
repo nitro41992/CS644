@@ -1,55 +1,37 @@
-//jdk libraries
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-
-//hadoop conf libraries
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-
-//hadoop mapreduce libraries
-
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-//main class
+
 public class RelFrequency{
-	
-    //TreeSet declared
-	public static TreeSet<MyDataType> sTreeSet = new TreeSet<MyDataType>();
-	
-	/*
-	MyDataType Class
-	
-	Define:  A user datatype to store pair of word <key> and its relative frequency with previous word <rFreqD>
-	
-	*/
-	public static class MyDataType implements Comparable<MyDataType> 
+
+	public static class Pair implements Comparable<Pair> 
 	{
-		double relativeFrequency;
+		double Frequency;
 		String key;
 
-		MyDataType(double relativeFrequency, String key) 
+		Pair(double Frequency, String key) 
 		{
-			this.relativeFrequency = relativeFrequency;
+			this.Frequency = Frequency;
 			this.key = key;
 			  
 		}
 
 		@Override
-		public int compareTo(MyDataType myDataType) 
+		public int compareTo(Pair pair) 
 		{
 			
-			if(this.relativeFrequency<=myDataType.relativeFrequency)
+			if(this.Frequency <= pair.Frequency)
 			{
 				return 1;
 			}
@@ -61,23 +43,11 @@ public class RelFrequency{
 		}
 	}
 	
-	
-	/* 
-	 Map Class:
-	
-	 Input : Key: some number <LongWritable>, Value: sentance <Text>
-	 Output: Key: * A_word or A_word B_word <Text>, Value:1 <LongWritable>
-	 
-	 Define: A Mapper class to filter words and pairs.
-	 
-	 */
-	
-	
 	public static class Map extends Mapper<LongWritable, Text, Text, LongWritable>
 		{
                 
-                private Text key_1 = new Text();
-                private LongWritable value_1=new LongWritable(1);
+                private Text wordPair = new Text();
+                private LongWritable frequency = new LongWritable(1);
 
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
 			{
@@ -89,42 +59,33 @@ public class RelFrequency{
 			    
 			    while(tokenizer.hasMoreElements())
 			    {
-			    	String word_A = new String(tokenizer.nextToken());
-			    	word_A = word_A.trim();
-			    	if (word_A.length()<3) continue;
-			    	words.add(word_A);
+			    	String word = new String(tokenizer.nextToken());
+			    	word = word.trim();
+			    	
+			    	if (word.length() < 3) continue;
+			    	words.add(word);
+			    	
 			    }
 			    for (int i=0;i<words.size();i++)
 				{
-					key_1.set("*"+" "+words.get(i).trim());
-					//collecting output
-        	    	context.write(key_1, value_1);
+					wordPair.set("*"+" "+words.get(i).trim());
+        	    	context.write(wordPair, frequency);
 				}
 				
 			    for (int i=1;i<words.size();i++)
 			    {   
-			        key_1.set(words.get(i-1).trim()+" "+words.get(i).trim());
-					//collecting output
-			    	context.write(key_1,value_1);
+			        wordPair.set(words.get(i-1).trim()+" "+words.get(i).trim());
+			    	context.write(wordPair,frequency);
 			    	
 			    }
 
 		    }
 
 		}
-    
-	/* 
-	 Combiner Class:
-	
-	 Input : Key: * A_word or A_word B_word <Text>, Value:1 <LongWritable>
-	 Output: Key: * A_word or A_word B_word <Text>, Value: count of A_word OR count of pair:A_word and B_word <LongWritable>
-	 
-	 Define: A Combiner class to count the number of words and pairs
-	 */
 	
 	public static class Combiner extends Reducer<Text, LongWritable, Text, LongWritable>
 		{
-			private LongWritable value_1=new LongWritable();
+			private LongWritable frequency=new LongWritable();
 			
 		    public void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException
 			{
@@ -135,31 +96,23 @@ public class RelFrequency{
 						sum = sum + val.get();
 					}
 				
-				value_1.set(sum);
+				frequency.set(sum);
 				
-				//collecting output
-				context.write(key, value_1);
+				context.write(key, frequency);
 			}
 
 		}
     
-	/* 
-	 Reducer Class:
-	
-	 Input : Key: * A_word or A_word B_word <Text>, Value: count of A_word OR count of pair:A_word and B_word <LongWritable>
-	 Output: Key: A_word  B_word <Text>, Value: relativeFrequency <Text>
-	 
-	 Define: Reducer Class is calculating Relative frequency and adding top 100 pair to a tree set of MyDataType(user Define datatype)
-	 
-	 */
+	public static TreeSet<Pair> ts = new TreeSet<Pair>();
+
 	public static class Reduce extends Reducer<Text, LongWritable, Text, Text> 
 	   {
 
-		private DoubleWritable rFrequency = new DoubleWritable();
+		private DoubleWritable Frequency = new DoubleWritable();
 
 		private HashMap<String,Double> hashMap = new HashMap<String,Double>();
 		
-		// getCount Method count the number of value in values
+
 		private double getCount(Iterable<LongWritable> values) 
 		{
 			double count = 0;
@@ -177,53 +130,53 @@ public class RelFrequency{
 
 			if (key.toString().split(" ")[0].equals("*")) 
 			{
-				double wordCount =0.0;
-				String A_word = key.toString().split(" ")[1];
+				double pairFrequency = 0.0;
+				String word = key.toString().split(" ")[1];
 
-				wordCount= getCount(values);        // A word Count
+				pairFrequency= getCount(values);        // A word Count
 
-				hashMap.put(A_word,wordCount);
+				hashMap.put(word,pairFrequency);
 			}
 			else 
 			{
-				String A_word = key.toString().split(" ")[0];
+				String word = key.toString().split(" ")[0];
 
-				double count = getCount(values);   // A B pair Count
-				double countOfA = hashMap.get(A_word);
-				rFrequency.set((double) count / countOfA);  //relative frequency (RF) of word B given word A 
-				Double rFreqD = rFrequency.get();
+				double count = getCount(values);   
+				double wordFrequency = hashMap.get(word);
+				
+				Frequency.set((double) count / wordFrequency);  
+				Double FinalFrequency = Frequency.get();
 
-					if(rFreqD !=1.0d)
+					if(FinalFrequency != 1.0d)
 						{
-							sTreeSet.add(new MyDataType(rFreqD, key.toString()));
-							if (sTreeSet.size() > 100) 
+							ts.add(new Pair(FinalFrequency, key.toString()));
+							if (ts.size() > 100) 
 							{
-								sTreeSet.pollLast(); 
+								ts.pollLast(); 
 							} 
 						}
 			
 			} 
 		}
-			//collecting output 
+
 		protected void cleanup(Context context) throws IOException, InterruptedException 
 		{
-			while (!sTreeSet.isEmpty()) 
+			while (!ts.isEmpty()) 
 				{
-					MyDataType pair = sTreeSet.pollFirst();
-	        		context.write(new Text(pair.key), new Text(Double.toString(pair.relativeFrequency)));
+					Pair pair = ts.pollFirst();
+	        		context.write(new Text(pair.key), new Text(Double.toString(pair.Frequency)));
 				}
 		}
 
 	}
 	
-	// Main Method
 	
 	public static void main(String[] args) throws Exception 
 	{   
 		Configuration config = new Configuration();
 		Job wordFreq = Job.getInstance(config, "Find Top 100K words...");
+		
 		wordFreq.setJarByClass(RelFrequency.class);
-
 		wordFreq.setMapperClass(Map.class);
 		wordFreq.setCombinerClass(Combiner.class);
 		wordFreq.setReducerClass(Reduce.class);
@@ -237,7 +190,13 @@ public class RelFrequency{
 		wordFreq.setOutputKeyClass(Text.class);
 		wordFreq.setOutputValueClass(LongWritable.class);
 
-		wordFreq.waitForCompletion(true);
+		boolean status = wordFreq.waitForCompletion(true);
+        if(status){
+        	System.exit(0);
+        }
+        else{
+        	System.exit(1);
+        }
 
 	}
 
