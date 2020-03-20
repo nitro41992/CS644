@@ -1,0 +1,2 @@
+hadoop jar RelFrequency.jar /user/ubuntu/input/ /user/ubuntu/output
+hdfs dfs -get /user/ubuntu/output/ ~/server/hadoop-2.10.0/repo/hw4/
