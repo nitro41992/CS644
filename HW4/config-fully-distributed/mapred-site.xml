@@ -19,6 +19,10 @@
 <configuration>
    <property> 
       <name>mapred.job.tracker</name> 
-      <value>hadoop-master:9001</value> 
-   </property> 
+      <value>master:9001</value> 
+   </property>
+   <property> 
+      <name>mapred.framework.name</name> 
+      <value>yarn</value> 
+   </property>
 </configuration>
