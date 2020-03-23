@@ -1,0 +1,8 @@
+Tha algorithm consisted of a Mapper, Combiner and a Reducer. The Mapper cleaned the
+input, tokenized the data and calculated the frequency of each word and each adjacent
+word pair. The word and/or word pair were established as the keys and the frequencies 
+were established as the values. The Combiner looped through all keys and their associated 
+frequencies and combined the frequencies of matching keys. The Reducer used a Hash Map for 
+single word frequencies and used it as a lookup to calculate the relative frequencies of the 
+adjacent word pairs. The results were collected and written to the context, collected and 
+outputted to HDFS.
