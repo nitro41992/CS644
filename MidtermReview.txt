@@ -1,0 +1,80 @@
+- Order of magnitude to 2^80
+- Four Big V's of Big Data including Value
+- Scientific Applications of BigDate
+	- Spallation Neutron Source
+- Supercomputer facility
+  	- Titan
+  	- Jaguar
+	- Summit: 200 Peta Flops per second
+- BigData workflows
+- Commonly used Computing Paradigms
+	- High-performance computing types: Super and Cluster computing
+- Key Size conversion to Number of Alternative Keys
+	- Time required to decrypt
+		- Average (divide by 2) or worst case
+- Terms of building a Supercomputer given peak computing power (how many, chips, cards, racks needed)
+- Top three Supercomputers
+- Communities and tech stacks across Communities
+- Five Layers in Cloud Computing
+	- Client
+	- Application
+	- Platform
+	- Infrastructure
+	- Server
+- Regions and Availability Zones
+- Names and main purpose of Hadoop Ecosystem
+- 3 Hadoop execution modes
+	- standalone
+	- psuedo
+	- fully
+- HDFS
+	- Write Once, Read Often
+	- Data is immutable
+	- How to set block size and replication number properly
+		- Why replicate?
+- Low-Level
+	- HDFS
+	- NFS (Linux FS)
+-Key-Value Store
+	-Primary for NoSQL databases
+- Document Store
+	- Difference between RDBMS
+- Graph models
+	- Challenges with linked data in RDBMS
+		- Mitigation with graph models
+- HBase
+	- Structure: Stored in tables with rows, similar to RDBMS
+	- Colimns are grouped into families
+	- Family features
+		- Compression
+		- In-memory option
+		- Stored together in a file called HFile/StoreFile
+	- Bad for RDBMS data retreival
+	- Distributed management architecture HBase
+		- Table is divided into regions (Region Server)
+			- Region size: 10 to 1000 regions
+			- 1GB to 2 GB per regions
+	- Need to know minor and major compaction
+	- Able to store multiple versions of data in each cell (know how this is possible)
+- Need to know YARN and execution dynamics in Hadoop 2
+	- Where it is added in Hadoop 2
+	- Need to know execution dynamics in Hadoop 1
+- Spark
+	- Suited for applications dealing with multiple iterations
+	- Resilient distributed datasets (RDD)
+		- Block is brought from disk into memory
+			- Transformed and brought into memory
+		- Once created, actions can eb applied without loading original data from storage
+- Performance comparison between MapReduce and Spark
+	- Hadoop is faster without repititions, otherwise, Spark is better
+- Apache Storm
+	- Topology
+- Oozie workflows
+	- How to trigger Oozie workflow?
+	- What applications and jobs are supported?
+- Pig
+	- Dataflow language
+		- Need Datasource
+		- Functions are applied to datasource
+- Apache Hive
+	- Similar to SQL
