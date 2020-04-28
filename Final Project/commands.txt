@@ -24,8 +24,19 @@ source ~/.bashrc
 
 sudo cp -r oozie-4.3.0/distro/target/oozie-4.3.0-distro/oozie-4.3.0/* oozie/
 
+
 mkdir libext/
 $HADOOP_HOME/share/hadoop/*/*.jar libext/
+
+cp oozie-4.3.0/hadooplibs/hadoop-utils-2/target/oozie-hadoop-utils-hadoop-2-4.3.0.jar oozie/libext
+cp oozie-4.3.0/hadooplibs/hadoop-auth-2/target/oozie-hadoop-auth-hadoop-2-4.3.0.jar oozie/libext
+cp oozie-4.3.0/hadooplibs/hadoop-distcp-2/target/oozie-hadoop-distcp-hadoop-2-4.3.0.jar oozie/libext
+
+cp $HADOOP_HOME/share/hadoop/common/*.jar oozie/libext
+cp $HADOOP_HOME/share/hadoop/common/lib/*.jar oozie/libext
+cp $HADOOP_HOME/share/hadoop/hdfs/*.jar oozie/libext
+cp $HADOOP_HOME/share/hadoop/mapreduce/*.jar oozie/libext
+cp $HADOOP_HOME/share/hadoop/yarn/*.jar oozie/libext
 
 cd libext
 wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip
@@ -33,6 +44,7 @@ wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-conn
 
 
 oozie-setup.sh sharelib create -fs hdfs://localhost:9000 -locallib /home/ubuntu/server/oozie/oozie-sharelib-4.3.0.tar.gz
+hadoop fs -chmod g+w /user/ubuntu/share/lib/lib_20200428181353
 
 ooziedb.sh create -sqlfile oozie.sql -run
 
@@ -63,7 +75,25 @@ ubuntu@ip-172-31-42-214:~/server/oozie$ sudo cp libext/mysql-connector-java-8.0.
 
 ./oozie-setup.sh prepare-war
 
+cp -r oozie/libext/* oozie/oozie-server/webapps/oozie/WEB-INF/lib/
+
 oozied.sh start
 oozied.sh run
 
 oozie admin -oozie http://localhost:11000/oozie -status
+
+
+
+------------ALL Exports--------------------------------------------
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+PATH=$PATH:$HOME/.local/bin:$HOME/binPATH=$PATH:$JAVA_HOME/bin:PATH
+export PATH
+export HADOOP_HOME=/home/ubuntu/server/hadoop-2.10.0
+export HADOOP_PREFIX=/home/ubuntu/server/hadoop-2.10.0
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export OOZIE_HOME=/home/ubuntu/server/oozie
+export OOZIE_CONFIG=$OOZIE_HOME/conf
+export PATH=$PATH:$OOZIE_HOME/bin
+export OOZIE_URL=http://localhost:11000/oozie
+source ~/.bashrc
