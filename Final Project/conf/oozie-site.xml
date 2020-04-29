@@ -39,13 +39,12 @@
     </property>
     <property>
         <name>oozie.service.WorkflowAppService.system.libpath</name>
-        <value>hdfs:///user/hadoop/share/lib</value>
+        <value>hdfs:///user/ubuntu/share/lib</value>
     </property>
     <property>
         <name>oozie.service.WorkflowAppService.WorkflowDefinitionMaxLength</name>
         <value>100000000</value>
     </property>
-
     <!--
         Refer to the oozie-default.xml file for the complete list of
         Oozie configuration properties and their default values.

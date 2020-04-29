@@ -39,21 +39,4 @@
         <value>yarn</value>
     </property>
 
-    <property>
-        <name>fs.defaultFS</name>
-        <value>hdfs://localhost:9000</value>
-    </property>
-    <property>
-        <name>hadoop.proxyuser.ubuntu.hosts</name>
-        <value>localhost</value>
-    </property>
-    <property>
-        <name>hadoop.proxyuser.ubuntu.groups</name>
-        <value>hadoop</value>
-    </property>
-    <property>
-        <name>fs.defaultFS</name>
-        <value>hdfs://localhost:9000</value>
-    </property>
-
 </configuration>

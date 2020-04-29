@@ -23,10 +23,10 @@ source ~/.bashrc
 ./mkdistro.sh -DskipTests
 
 sudo cp -r oozie-4.3.0/distro/target/oozie-4.3.0-distro/oozie-4.3.0/* oozie/
-
+sudo chown -R ubuntu:ubuntu oozie/*
 
 mkdir libext/
-$HADOOP_HOME/share/hadoop/*/*.jar libext/
+cp $HADOOP_HOME/share/hadoop/*/*.jar libext/
 
 cp oozie-4.3.0/hadooplibs/hadoop-utils-2/target/oozie-hadoop-utils-hadoop-2-4.3.0.jar oozie/libext
 cp oozie-4.3.0/hadooplibs/hadoop-auth-2/target/oozie-hadoop-auth-hadoop-2-4.3.0.jar oozie/libext
@@ -43,7 +43,7 @@ wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip
 wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar
 
 
-oozie-setup.sh sharelib create -fs hdfs://localhost:9000 -locallib /home/ubuntu/server/oozie/oozie-sharelib-4.3.0.tar.gz
+oozie-setup.sh sharelib create -fs hdfs://master:9000
 hadoop fs -chmod g+w /user/ubuntu/share/lib/lib_20200428181353
 
 ooziedb.sh create -sqlfile oozie.sql -run
@@ -51,12 +51,11 @@ ooziedb.sh create -sqlfile oozie.sql -run
 export OOZIE_HOME=/home/ubuntu/server/oozie
 export OOZIE_CONFIG=$OOZIE_HOME/conf
 export PATH=$PATH:$OOZIE_HOME/bin
-export OOZIE_URL=http://localhost:11000/oozie
+export OOZIE_URL=http://master:11000/oozie
 source ~/.bashrc
 
 sudo apt-get install unzip
 sudo apt-get install zip
-
 
 sudo apt-get install mysql-server
 sudo apt-get install mysql-client
@@ -71,7 +70,7 @@ FLUSH privileges;
 exit
 
 sudo cp libext/ext-2.2.zip $MAVEN_HOME/lib/
-ubuntu@ip-172-31-42-214:~/server/oozie$ sudo cp libext/mysql-connector-java-8.0.11.jar $MAVEN_HOME/lib/
+sudo cp libext/mysql-connector-java-8.0.11.jar $MAVEN_HOME/lib/
 
 ./oozie-setup.sh prepare-war
 
@@ -80,7 +79,7 @@ cp -r oozie/libext/* oozie/oozie-server/webapps/oozie/WEB-INF/lib/
 oozied.sh start
 oozied.sh run
 
-oozie admin -oozie http://localhost:11000/oozie -status
+oozie admin -oozie http://master:11000/oozie -status
 
 
 
@@ -95,5 +94,13 @@ export PATH=$PATH:$HADOOP_HOME/sbin
 export OOZIE_HOME=/home/ubuntu/server/oozie
 export OOZIE_CONFIG=$OOZIE_HOME/conf
 export PATH=$PATH:$OOZIE_HOME/bin
-export OOZIE_URL=http://localhost:11000/oozie
+export OOZIE_URL=http://master:11000/oozie
 source ~/.bashrc
+
+
+---------If Datanodes dont start-----------------
+stop-all.sh
+rm -r ~/server/hadoop-2.10.0/dfs/name/*
+rm -d ~/server/hadoop-2.10.0/dfs/name
+hadoop namenode -format
+start-all.sh
