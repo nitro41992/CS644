@@ -102,6 +102,7 @@ source ~/.bashrc
 
 start-all.sh
 oozied.sh run
+mr-jobhistory-daemon.sh --config server/hadoop-2.10.0/etc/hadoop/ start historyserver
 
 oozie job -oozie http://localhost:11000/oozie -config ../../hadoop-2.10.0/repo/FinalProject/map-reduce/job.properties -run
 
@@ -112,3 +113,10 @@ rm -r ~/server/hadoop-2.10.0/dfs/name/*
 rm -d ~/server/hadoop-2.10.0/dfs/name
 hadoop namenode -format
 start-all.sh
+
+
+---Check Ooozie Job Info------------------------
+oozie job -oozie http://localhost:11000/oozie -info 0000000-200503205623841-oozie-ubun-W
+
+---Kill Ooozie Job Info------------------------
+ oozie job -kill 0000000-200503205623841-oozie-ubun-W

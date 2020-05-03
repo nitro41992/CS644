@@ -1,40 +1,24 @@
-//jdk libraries
 
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.*;
-
-//hadoop conf libraries
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-
-//hadoop mapreduce libraries
-
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-//main class
+
 public class AirlineOnTime {
 
-	// TreeSet declared
 	public static TreeSet<MyDataType> flightWithHighestProbablity = new TreeSet<MyDataType>();
 	public static TreeSet<MyDataType> flightWithLowestProbablity = new TreeSet<MyDataType>();
 
-	/*
-	 * MyDataType Class
-	 * 
-	 * Define: A user datatype to store Airline unique code <key> and its delayed
-	 * probablity <probablityD>
-	 * 
-	 */
 	public static class MyDataType implements Comparable<MyDataType> {
 		double probablity;
 		String key;
@@ -55,17 +39,6 @@ public class AirlineOnTime {
 
 		}
 	}
-
-	/*
-	 * Map Class:
-	 * 
-	 * Input : Key: some number <LongWritable>, Value: sentance <Text> Output: Key:
-	 * * Flight or Flight <Text>, Value:1 <LongWritable>
-	 * 
-	 * Define: A Mapper class to filter delayed flights. *Flight is for delayed
-	 * flights and Flight is for counting number of alirlines flew.
-	 * 
-	 */
 
 	public static class Map extends Mapper<LongWritable, Text, Text, LongWritable> {
 
@@ -103,16 +76,6 @@ public class AirlineOnTime {
 		}
 	}
 
-	/*
-	 * Combiner Class:
-	 * 
-	 * Input : Key: * Flight or Flight <Text>, Value:1 <LongWritable> Output: Key: *
-	 * Flight or Flight <Text>, Value: count of * Flight OR Flight <LongWritable>
-	 * 
-	 * Define: A Combiner class to count the number of airlines delayed and number
-	 * of airlines flew.
-	 */
-
 	public static class Combiner extends Reducer<Text, LongWritable, Text, LongWritable> {
 		private LongWritable value_1 = new LongWritable();
 
@@ -126,29 +89,17 @@ public class AirlineOnTime {
 
 			value_1.set(sum);
 
-			// collecting output
 			context.write(key, value_1);
 		}
 
 	}
 
-	/*
-	 * Reducer Class:
-	 * 
-	 * Input : Key: * Flight or Flight <Text>, Value: count of * Flight OR Flight
-	 * <LongWritable> Output: Key: Flight <Text>, Value: probablity <Text>
-	 * 
-	 * Define: Reducer Class is calculating Probablity of delayed flights and adding
-	 * top 3 and least 3 flights to a tree sets of MyDataType(user Define datatype)
-	 * 
-	 */
 	public static class Reduce extends Reducer<Text, LongWritable, Text, Text> {
 
 		private DoubleWritable probablity = new DoubleWritable();
 
 		private HashMap<String, Double> hashMap = new HashMap<String, Double>();
 
-		// getCount Method count the number of value in values
 		private double getCount(Iterable<LongWritable> values) {
 			double count = 0;
 
@@ -165,15 +116,15 @@ public class AirlineOnTime {
 				double flightCount = 0.0;
 				String flightName = key.toString().split(" ")[1];
 
-				flightCount = getCount(values); // delayed flight Count
+				flightCount = getCount(values);
 
 				hashMap.put(flightName, flightCount);
 			} else {
 				String flightName = key.toString().split(" ")[0];
 
-				double count = getCount(values); // number of fly by that particular flight
+				double count = getCount(values);
 				double countDelay = hashMap.get(flightName);
-				probablity.set(countDelay / count); // relative frequency (RF) of word B given word A
+				probablity.set(countDelay / count);
 				Double probablityD = probablity.get();
 				flightWithHighestProbablity.add(new MyDataType(probablityD, key.toString()));
 				flightWithLowestProbablity.add(new MyDataType(probablityD, key.toString()));
@@ -187,7 +138,6 @@ public class AirlineOnTime {
 			}
 		}
 
-		// collecting output
 		protected void cleanup(Context context) throws IOException, InterruptedException {
 			context.write(new Text("Airline with Highest delay Probablity:  "), null);
 			while (!flightWithHighestProbablity.isEmpty()) {
@@ -203,7 +153,6 @@ public class AirlineOnTime {
 
 	}
 
-	// Main Method
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();

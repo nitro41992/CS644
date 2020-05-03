@@ -1,40 +1,22 @@
-//jdk libraries
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-
-//hadoop conf libraries
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-
-//hadoop mapreduce libraries
-
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-//main class
+
 public class AverageTaxiTime {
 
-	// TreeSet declared
 	public static TreeSet<MyDataType> airportWithHighestAverage = new TreeSet<MyDataType>();
 	public static TreeSet<MyDataType> airportWithLowestAverage = new TreeSet<MyDataType>();
 
-	/*
-	 * MyDataType Class
-	 * 
-	 * Define: A user datatype to store airport code <key> and average taxi time
-	 * <averageD>
-	 * 
-	 */
 	public static class MyDataType implements Comparable<MyDataType> {
 		double average;
 		String key;
@@ -55,19 +37,6 @@ public class AverageTaxiTime {
 
 		}
 	}
-
-	/*
-	 * Map Class:
-	 * 
-	 * Input : Key: some number <LongWritable>, Value: sentance <Text> Output: Key:
-	 * * Airport or Airport <Text>, Value:1 for airport count and taxi time for *
-	 * Airport <LongWritable>
-	 * 
-	 * Define: A Mapper class to filter airports and there taxi time (both in and
-	 * out). * Airport is for taxi time(in or out) of airports and Airport is for
-	 * number of flight airport has hosted.
-	 * 
-	 */
 
 	public static class Map extends Mapper<LongWritable, Text, Text, LongWritable> {
 
@@ -105,15 +74,6 @@ public class AverageTaxiTime {
 		}
 	}
 
-	/*
-	 * Combiner Class:
-	 * 
-	 * Input : Key: * Flight or Flight <Text>, Value:1 <LongWritable> Output: Key: *
-	 * Flight or Flight <Text>, Value: count of * Flight OR Flight <LongWritable>
-	 * 
-	 * Define: A Combiner class to count the number of airlines flew or landed from
-	 * that airport and total taxi time .
-	 */
 
 	public static class Combiner extends Reducer<Text, LongWritable, Text, LongWritable> {
 		private LongWritable value_1 = new LongWritable();
@@ -128,30 +88,19 @@ public class AverageTaxiTime {
 
 			value_1.set(sum);
 
-			// collecting output
 			context.write(key, value_1);
 		}
 
 	}
 
-	/*
-	 * Reducer Class:
-	 * 
-	 * Input : Key: * Flight or Flight <Text>, Value: count of * Flight OR Flight
-	 * <LongWritable> Output: Key: Flight <Text>, Value: average <Text>
-	 * 
-	 * Define: Reducer Class is calculating Average taxi time on an airport and
-	 * adding top 3 and least 3 airports to a tree sets of MyDataType(user Define
-	 * datatype)
-	 * 
-	 */
+
 	public static class Reduce extends Reducer<Text, LongWritable, Text, Text> {
 
 		private DoubleWritable average = new DoubleWritable();
 
 		private HashMap<String, Double> hashMap = new HashMap<String, Double>();
 
-		// getCount Method count the number of value in values
+
 		private double getCount(Iterable<LongWritable> values) {
 			double count = 0;
 
@@ -169,18 +118,18 @@ public class AverageTaxiTime {
 				double taxiTime = 0.0;
 				String airportName = key.toString().split(" ")[1];
 
-				taxiTime = getCount(values); // delayed airport Count
+				taxiTime = getCount(values); 
 
 				hashMap.put(airportName, taxiTime);
 				
 			} else {
 				String airportName = key.toString().split(" ")[0];
 
-				double count = getCount(values); // number of fly by that particular airport
+				double count = getCount(values); 
 				if ((hashMap.get(airportName)) != null) {
 					
-					double totalTaxiTime = hashMap.get(airportName); // *************** Issue here
-					average.set(totalTaxiTime / count); // relative frequency (RF) of word B given word A
+					double totalTaxiTime = hashMap.get(airportName); 
+					average.set(totalTaxiTime / count); 
 					Double averageD = average.get();
 					airportWithHighestAverage.add(new MyDataType(averageD, key.toString()));
 					airportWithLowestAverage.add(new MyDataType(averageD, key.toString()));
@@ -198,7 +147,7 @@ public class AverageTaxiTime {
 			}
 		}
 
-		// collecting output
+
 		protected void cleanup(Context context) throws IOException, InterruptedException {
 			
 			context.write(new Text("Airport with Highest average:  "), null);
@@ -216,8 +165,6 @@ public class AverageTaxiTime {
 		}
 
 	}
-
-	// Main Method
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();

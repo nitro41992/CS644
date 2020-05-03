@@ -1,39 +1,20 @@
-//jdk libraries
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-
-//hadoop conf libraries
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-
-//hadoop mapreduce libraries
-
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-//main class
-
 public class CancellationReason {
 
 	public static TreeSet<MyDataType> topCancellationReason = new TreeSet<MyDataType>();
 
-	/*
-	 * MyDataType Class
-	 * 
-	 * Define: A user datatype to store reason <key> and its count <totalCount>
-	 * 
-	 */
 	public static class MyDataType implements Comparable<MyDataType> {
 		String reason;
 		int count;
@@ -50,17 +31,6 @@ public class CancellationReason {
 				return -1;
 		}
 	}
-
-	/*
-	 * Map Class:
-	 * 
-	 * Input : Key: some number <LongWritable>, Value: sentance <Text> Output: Key:
-	 * reason <Text>, Value:1 <LongWritable>
-	 * 
-	 * Define: A Mapper class to get different type of cancellation reason. A =
-	 * carrier, B = weather, C = NAS, D = security
-	 * 
-	 */
 
 	public static class Map extends Mapper<LongWritable, Text, Text, LongWritable> {
 
@@ -108,16 +78,6 @@ public class CancellationReason {
 
 	}
 
-	/*
-	 * Reducer Class:
-	 * 
-	 * Input : Key: reason <Text>, Value:1 <LongWritable> Output: Key: reason
-	 * <Text>, Value: totalCount <int>
-	 * 
-	 * Define: Reducer Class is calculating number of flight cancelled due to
-	 * following reason and then getting the most common reason.
-	 * 
-	 */
 	public static class Reduce extends Reducer<Text, LongWritable, Text, LongWritable> {
 		public void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
 
@@ -134,7 +94,7 @@ public class CancellationReason {
 			    	
 		}
 		
-		//collecting output 
+
 	    protected void cleanup(Context context) throws IOException, InterruptedException {
 	    	context.write(new Text("Top Reason for Cancellation:  "), null);
 	    	while (!topCancellationReason.isEmpty())
@@ -144,7 +104,6 @@ public class CancellationReason {
 	    		 }
 	    }
 	}
-	// Main Method
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
