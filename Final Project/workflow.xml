@@ -1,6 +1,6 @@
 <workflow-app xmlns="uri:oozie:workflow:0.2" name="Program-wf">
-    <start to="AirlineOnTime"/>
-    <action name="AirlineOnTime">
+    <start to="AirlineOnSchedule"/>
+    <action name="AirlineOnSchedule">
         <map-reduce>
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
@@ -22,15 +22,15 @@
                 </property>
                 <property>
                     <name>mapreduce.map.class</name>
-                    <value>Schedule.Map</value>
+                    <value>AirlineOnSchedule.Map</value>
                 </property>
                 <property>
                     <name>mapreduce.combine.class</name>
-                    <value>Schdule.Combiner</value>
+                    <value>AirlineOnSchedule.Combiner</value>
                 </property>
                 <property>
                     <name>mapreduce.reducer.class</name>
-                    <value>Schedule.Reduce</value>
+                    <value>AirlineOnSchedule.Reduce</value>
                 </property>
 		<property>
 		   <name>mapred.output.key.class</name>
@@ -54,11 +54,11 @@
                 </property>
             </configuration>
         </map-reduce>
-        <ok to="AverageTaxiTime"/>
+        <ok to="AirportAverageTaxiTime"/>
         <error to="fail"/>
     </action>
 
-    <action name="AverageTaxiTime">
+    <action name="AirportAverageTaxiTime">
         <map-reduce>
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
@@ -80,11 +80,15 @@
                 </property>
                 <property>
                     <name>mapreduce.map.class</name>
-                    <value>TaxiTimeInOut.TaxiInOutMap</value>
+                    <value>AirportAverageTaxiTime.Map</value>
                 </property>
                 <property>
                     <name>mapreduce.reducer.class</name>
-                    <value>TaxiTimeInOut.TaxiInOutReduce</value>
+                    <value>AirportAverageTaxiTime.Combiner</value>
+                </property>
+                <property>
+                    <name>mapreduce.reducer.class</name>
+                    <value>AirportAverageTaxiTime.Reduce</value>
                 </property>
 			<property>
 		   <name>mapred.output.key.class</name>
@@ -108,11 +112,11 @@
                 </property>
             </configuration>
         </map-reduce>
-        <ok to="CancellationReason"/>
+        <ok to="ReasonForCancellation"/>
         <error to="fail"/>
     </action>
 
-	<action name="CancellationReason">
+	<action name="ReasonForCancellation">
         <map-reduce>
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${nameNode}</name-node>
@@ -134,11 +138,11 @@
                 </property>
                 <property>
                     <name>mapreduce.map.class</name>
-                    <value>CancellationReason.CancelReasonMapper</value>
+                    <value>ReasonForCancellation.Map</value>
                 </property>
                 <property>
                     <name>mapreduce.reducer.class</name>
-                    <value>CancellationReason.CancelReasonReducer</value>
+                    <value>ReasonForCancellation.Reduce</value>
                 </property>
 		<property>
 		   <name>mapred.output.key.class</name>

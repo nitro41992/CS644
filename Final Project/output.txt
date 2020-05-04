@@ -1,0 +1,33 @@
+
+1987 - 2008 on 8 slave nodes
+
+AirlineOnSchedule
+=====================================
+Highest Delay Probablity:  
+EV	0.25581540294990907
+YV	0.2262646725128589
+PI	0.2251913399187436
+
+Lowest Delay Probablity:  
+HA	0.045017811394943215
+AQ	0.10963189819612296
+ML (1)	0.11821640938092276
+
+AirportAverageTaxiTime
+=====================================
+Airport with Highest average:  
+CKB	111.85714285714286
+LNY	48.075993091537136
+CBM	24.0
+
+Airport with Lowest average:  
+PUB	0.018606024808033077
+SPN	0.027541231001401316
+GUM	0.06057029854554733
+
+ReasonForCancellation
+=====================================
+Top Reason for Cancellation:  
+carrier	289613
+
+
