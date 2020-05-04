@@ -16,50 +16,5 @@
 
 <!-- Put site-specific property overrides in this file. -->
 
-	<configuration>
-
-
-		<property>
-			<name>mapreduce.tasktracker.report.address</name>
-			<value>127.0.0.1:0</value>
-		</property>
-
-		<property>
-			<name>mapreduce.job.queuename</name>
-			<value>default</value>
-		</property>
-		<property> 
-			<name>mapreduce.jobhistory.address</name>
-			<value>master:10020</value> 
-		</property>
-
-		<property> 
-			<name>mapreduce.jobhistory.webapp.address</name>
-			<value>master:19888</value> 
-		</property>
-
-		<property>
-			<name>mapreduce.jobhistory.done-dir</name>
-			<value>/user/history/done</value>
-		</property>
-		
-		<property>
-			<name>mapreduce.jobhistory.intermediate-done-dir</name>
-			<value>/user/history/done_intermediate</value>
-		</property>
-
-		<property>
-			<name>mapreduce.jobtracker.address</name>
-			<value>master:9001</value>
-		</property>
-
-		<property>
-			<name>mapreduce.jobtracker.http.address</name>
-			<value>master:50060</value>
-		</property>
-
-		<property>
-			<name>mapreduce.framework.name</name>
-			<value>yarn</value>
-		</property>
-	</configuration>
+<configuration>
+</configuration>
