@@ -1,0 +1,48 @@
+Big Data Analytics
+------------------------------
+- Rule-based vs Machine Learning approach
+- Data Analytics Process
+- Main steps for a Machine Learning solution
+- 5 Questions and what algorithm can be used
+- When to use Machine Learning? (Cheat Sheet)
+- Mahout - API functions that implement ML and AI algorithms
+- User-based and Item-based algorithms
+- 3 main issues of Pearson Correlation
+- Clustering
+    - K-Means Clustering algorithm
+        - How to implement MapReduce
+- Distance Measurements
+    - Cosine
+    - Manhattan
+    - Euclidean
+- Supervised vs. Unsupervised Learning
+- Naive Bayes Technical Details
+- Cost Functions
+    - False Alarm
+    - Missed Detection
+
+Big Data Visualization
+------------------------------
+- Two ways to represent images
+    - Vector
+    - Raster (Focus)
+- How do we draw an images?
+    - Projection
+- Rednering Process
+- Data Type of Raster images
+- Transfer function
+    - Convert pixel to intensity values
+- Dynamic Range
+    - I max - I min
+- Converting Pixel Resolution
+- Minimum precision that is needed for an image without bands
+- Ray Tracing algorithm
+- Ray Casting
+- Marching Cubes
+- Techniques used for Big Data Visualization
+
+Last Chapter
+------------------------------
+- Why the current internet is not suffiicient for meeting Big Data applications
+    - Motivation for high performance networks
+- TCP/IP network stack
