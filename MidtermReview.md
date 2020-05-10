@@ -5,7 +5,7 @@
 - Supercomputer facility
   	- Titan
   	- Jaguar
-	- Summit: 200 Peta Flops per second
+	- Summit: 200 Peta-Flops per second
 - BigData workflows
 - Commonly used Computing Paradigms
 	- High-performance computing types: Super and Cluster computing
@@ -44,12 +44,12 @@
 		- Mitigation with graph models
 - HBase
 	- Structure: Stored in tables with rows, similar to RDBMS
-	- Colimns are grouped into families
+	- Columns are grouped into families
 	- Family features
 		- Compression
 		- In-memory option
 		- Stored together in a file called HFile/StoreFile
-	- Bad for RDBMS data retreival
+	- Bad for RDBMS data retrieval
 	- Distributed management architecture HBase
 		- Table is divided into regions (Region Server)
 			- Region size: 10 to 1000 regions
@@ -61,12 +61,12 @@
 	- Need to know execution dynamics in Hadoop 1
 - Spark
 	- Suited for applications dealing with multiple iterations
-	- Resilient distributed datasets (RDD)
+	- Resilient distributed data sets (RDD)
 		- Block is brought from disk into memory
 			- Transformed and brought into memory
 		- Once created, actions can eb applied without loading original data from storage
 - Performance comparison between MapReduce and Spark
-	- Hadoop is faster without repititions, otherwise, Spark is better
+	- Hadoop is faster without repetitions, otherwise, Spark is better
 - Apache Storm
 	- Topology
 - Oozie workflows
@@ -74,7 +74,7 @@
 	- What applications and jobs are supported?
 - Pig
 	- Dataflow language
-		- Need Datasource
-		- Functions are applied to datasource
+		- Need Data source
+		- Functions are applied to data source
 - Apache Hive
 	- Similar to SQL
