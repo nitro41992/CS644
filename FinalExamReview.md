@@ -132,22 +132,78 @@
         - Maximum value of display's output range becomes full intensity
         
 - Transfer function
-    - Convert pixel to intensity values
+    - Pixel values represent intensity or brightness
+        - Bigger numbers equal brighter pixel values
+    - Function that maps the input pixel to luminance of the displayed image
+        - Determined by the display's physical constraints
 
 - Dynamic Range
-    - I max - I min
+    - Determines display achievable image contrast
+    - I_max / I_min or (I_max + k / I_min + k)
+        - I_max is maximum displayable intensity
+        - I_min is minimum displayable intensity
+        - k is reflected light by display
+            - Usually I_max * 0.05
 
-- Converting Pixel Resolution
+- Levels needed for given dynamic range
+```    
+    R_d = I_max / I_min 
+    =>  I_max / I_min = (1.02)^N 
+    => N = log(R_d) / log(1.02)
+```
 
-- Minimum precision that is needed for an image without bands
+- Pixel value range needed given dynamic range
+    - Pixel Range = R_d / 0.02
+
+- Converting Pixel Resolution (Quantization)
+    - Banding can occur with changes in intensity > 2%
+    - Darker tones have lower intensity values
+        - Intensity changes are more significant due to larger percent changes
+            - 1 to 2 = 100% change vs 198 - 200 = 1% change
+    - Logarithmic is the most efficient
 
 - Ray Tracing algorithm
+```
+for each pixel in the 2D viewing plane
+    {
+        1) Compute a viewing ray
+        2) Intersect ray with scene and find a visible point
+        3) Compute illumination at the visible point
+        4) Put result into image
+    }
+```
 
 - Ray Casting
+    - Surface approximation used by sampling results of a voxel grid via a ray
+        - Sampling distance is user-defined and should be less than the size of a voxel
+    - User-defined transfer functions are used ton convert samples to color and alpha values
 
 - Marching Cubes
+    - Creation of a mesh from an implicit function (one of the form f(x, y, z) = 0). 
+        - Iterates  over a uniform grid of cubes superimposed over a region of the function.
 
 - Techniques used for Big Data Visualization
+    - Pixel Oriented
+        - Using pixel intensity to display a column of data values based on the data range
+    - Aggregation and Level of Details (LOD)
+        - A tree for aggregating data items in either a bottom-up or top-down approach
+        - Allows for a roll-up and drill-down of aggregation
+    - Distortion
+        - Allowing manipulations of regions of dat ain order to provide granular details
+            - Magnifying
+        - Scaling
+    - Clutter Reduction
+        - Reduces data noise
+            - Sampling
+            - Re-ordering 
+            - Edge bundling 
+    - Query-based
+        - Search
+        - Join
+        - Merge
+        - Group
+        - Order
+        - etc.
 
 ## High-Performance Networks
 
