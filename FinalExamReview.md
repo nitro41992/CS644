@@ -207,6 +207,36 @@ for each pixel in the 2D viewing plane
 
 ## High-Performance Networks
 
-- Why the current internet is not sufficient for meeting Big Data applications
-    - Motivation for high performance networks
+- Motivation for high performance networks
+    - Internet is not sufficient for meeting Big Data applications
+        - Only backbone has high bandwidths (last mile)
+        - Packet-level resource sharing
+        - Best-effort IP routing
+        - TCP: hard to sustain 10s Gbps or to stabilize
+
 - TCP/IP network stack
+    - 4 layers
+        - Application
+            - Formats data
+        - Transport
+            - Packetize the data
+        - Network
+            - Add source and destination IP to each packet
+        - Link
+            - Adds source and destination MAC address to each packet
+            - Passes to NIC drivers
+    - Process
+        1) Sender broadcasts an ARP request to router
+        2) If the intended recipient is on a different sub-network, Router responds with its own MAC address
+            - If the intended recipient is on the same sub-network, the MAC address of that recipient is sent to the sender that made the ARP request.
+            - The MAC address is added as the destination of the packet
+            - The packet is sent to the recipient
+        3) Sender replaces MAC address of the destination on each packet
+        4) Router sends an ARP request to all connected networks, including other routers
+        5) The process is repeated until a router can identify the recipient based on the destination IP address
+        6) If the recipient is found, the MAC address of that recipient is sent to the last router or sender that made the ARP request.
+            - A chain is thus created where each router in between the sender and receiver contains the MAC address only of the source of the ARP response.
+            - The MAC address is added as the destination of the packet
+            - The packet is sent to the recipient
+        
+
