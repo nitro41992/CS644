@@ -74,9 +74,12 @@
     - Correlation cannot be computed for only 1 overlap item between two users
     - Undefined if preference values are identical
 
-- Clustering
-    - K-Means Clustering algorithm
-        - How to implement MapReduce
+- MapReduce with k-means
+    - Each Mapper reads in the centroids at startup
+    - Each Mapper computes the relative centroids for a vector
+    - Each Reducer gets the partial sums from Mappers and recomputes the centroids
+    - Repeated until converged
+
 - Distance Measurements
     - Pearson
     - Cosine
