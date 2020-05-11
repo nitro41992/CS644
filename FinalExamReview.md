@@ -13,7 +13,7 @@
     - Data Cleaning
     - Data Combining
     - Data Reduction
-    - Machine Learning
+    - Machine Learning / Data mining
     - Knowledge Presentation
 
 - Main steps for a Machine Learning solution
@@ -71,7 +71,9 @@
 
 - 3 main issues of Pearson Correlation
     - Does not take into account items of overlap between two users
+        - Some other variable may be influencing the correlation
     - Correlation cannot be computed for only 1 overlap item between two users
+        - Multiple items are needed in order to measure correlation
     - Undefined if preference values are identical
 
 - MapReduce with k-means
@@ -106,11 +108,12 @@
         - Type II Error
         - Cost of a False Negative < Cost of a False Alarm 
             - e.g. Not identifying Spam when it is in fact Spam
-        -Minimize the amount of False Positives
+        - Minimize the amount of False Positives
 
 ## Big Data Visualization
 
-- Rasterization: converting a vector image (shapes) to a raster image (dots)
+- Rasterization
+    - Converting a vector image (shapes) to a raster image (dots)
 
 - Two ways to represent images
     - Vector
@@ -166,11 +169,11 @@
             - Usually I_max * 0.05
 
 - Levels needed for given dynamic range
-```    
-    R_d = I_max / I_min 
-    =>  I_max / I_min = (1.02)^N 
-    => N = log(R_d) / log(1.02)
-```
+    ```    
+        R_d = I_max / I_min 
+        =>  I_max / I_min = (1.02)^N 
+        => N = log(R_d) / log(1.02)
+    ```
 
 - Pixel value range needed given dynamic range
     - Pixel Range = R_d / 0.02
@@ -183,15 +186,15 @@
     - Logarithmic is the most efficient
 
 - Ray Tracing algorithm
-```
-for each pixel in the 2D viewing plane
-    {
-        1) Compute a viewing ray
-        2) Intersect ray with scene and find a visible point
-        3) Compute illumination at the visible point
-        4) Put result into image
-    }
-```
+    ```
+    for each pixel in the 2D viewing plane
+        {
+            1) Compute a viewing ray
+            2) Intersect ray with scene and find a visible point
+            3) Compute illumination at the visible point
+            4) Put result into image
+        }
+    ```
 
 - Ray Casting
     - Surface approximation used by sampling results of a voxel grid via a ray
@@ -258,5 +261,4 @@ for each pixel in the 2D viewing plane
             - A chain is thus created where each router in between the sender and receiver contains the MAC address only of the source of the ARP response.
             - The MAC address is added as the destination of the packet
             - The packet is sent to the recipient
-        
 
