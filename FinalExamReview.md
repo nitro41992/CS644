@@ -17,11 +17,18 @@
     - Knowledge Presentation
 
 - Main steps for a Machine Learning solution
-     - Define target
-     - Gather data
-     - Feature engineering
-     - Model fit
-     - Model evaluation
+    - Define  business problem 
+    - Extract data
+    - Iteratively develop model
+        - Define metric
+        - Split features and labels
+        - Feature engineering
+        - Model fit
+        - Model evaluation
+        - Repeat
+    - Deploy model
+    - Monitor model's performance
+    - Repeat
 
 - 5 Questions and what algorithm can be used
     - Is it A or B?
@@ -99,16 +106,14 @@
     - If Feature is continuous, use normal distribution as a function of mean and variance
 
 - Cost Functions
-    - False Alarm
+    - False Alarm (False Positive Error)
         - Type I Error
-        - Cost of a false alarm < Cost of a False Negative 
+        - Reject a true null hypothesis
             -e.g. Not identifying Cancer when it is in fact Cancer
-        - Minimize the amount of False Negatives
-    - Missed Detection
+    - Missed Detection (False Negative Error)
         - Type II Error
-        - Cost of a False Negative < Cost of a False Alarm 
+        - Fail to reject a false null hypothesis
             - e.g. Not identifying Spam when it is in fact Spam
-        - Minimize the amount of False Positives
 
 ## Big Data Visualization
 
@@ -130,7 +135,7 @@
         - Aliasing issues when image sampling
 
 - Rendering Process
-    - Compute color of original geometry based on light and color (Shading)
+    - Compute original geometry based on light and color (Shading)
     - Project original 3D geometry to 2D model (Projection)
         - How images are drawn
     - Clip original geometry outside of FOV (Clipping)
