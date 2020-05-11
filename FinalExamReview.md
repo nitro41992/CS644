@@ -85,11 +85,28 @@
     - Cosine
     - Manhattan
     - Euclidean
+
 - Supervised vs. Unsupervised Learning
+    - Supervised is learning where desired values are given
+    - Unsupervised is learning without a desired answer and patterns are found implicitly
+    - Both types can be combined during model fitting
+
 - Naive Bayes Technical Details
+    - P(Positive Class) = [P(Positive Class) * P(Feature|Positive Class)] / Evidence
+    - Evidence = [P(Positive Class) * P (Feature|Positive Class)] + [P(Negative Class) * P(Feature| Negative Class)]
+    - If Feature is continuous, use normal distribution as a function of mean and variance
+
 - Cost Functions
     - False Alarm
+        - Type I Error
+        - Cost of a false alarm < Cost of a False Negative 
+            -e.g. Not identifying Cancer when it is in fact Cancer
+        - Minimize the amount of False Negatives
     - Missed Detection
+        - Type II Error
+        - Cost of a False Negative < Cost of a False Alarm 
+            - e.g. Not identifying Spam when it is in fact Spam
+        -Minimize the amount of False Positives
 
 ## Big Data Visualization
 
